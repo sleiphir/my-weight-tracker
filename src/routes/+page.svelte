@@ -1,9 +1,14 @@
 <script lang="ts">
+	import defaultSettings from "../settings";
+	import type Settings from "../types/Settings";
+  import * as Storage from "../utils/localStorage";
+
   const functions: {name: string, link: string}[] = [
     { name: "Weight Tracking", link: "/weight" },
     { name: "Calories Tracking", link: "/calories" },
     { name: "Data management", link: '/data' },
     { name: "Statistics", link: '/stats' },
+    { name: "Settings", link: '/settings' },
   ]
 </script>
 

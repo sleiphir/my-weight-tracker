@@ -3,19 +3,19 @@
 	import * as Storage from '../../../utils/localStorage';
   import moment from "moment";
 
-	$: caloriesList = Storage.get<CaloriesInfo>("calories");
+	$: caloriesList = Storage.getArray<CaloriesInfo>("calories");
   
 	function save(event: any) {
     const calories = event.target.value as number;
     const index = event.target.dataset.index as number;
     const date  = event.target.dataset.datetime as Date;
-    Storage.update<CaloriesInfo>("calories", index, { calories, date });
+    Storage.updateArray<CaloriesInfo>("calories", index, { calories, date });
   }
 
 	function remove(event: any) {
     const index = event.target.dataset.index;
-    Storage.remove("calories", index);
-    caloriesList = [...Storage.get<CaloriesInfo>("calories")];
+    Storage.removeFromArray("calories", index);
+    caloriesList = [...Storage.getArray<CaloriesInfo>("calories")];
   }
 </script>
 

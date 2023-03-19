@@ -3,19 +3,19 @@
 	import * as Storage from '../../../utils/localStorage';
   import moment from "moment";
 
-	$: weightList = Storage.get<WeightInfo>("weight");
+	$: weightList = Storage.getArray<WeightInfo>("weight");
   
 	function save(event: any) {
     const weight = event.target.value as number;
     const index = event.target.dataset.index as number;
     const date  = event.target.dataset.datetime as Date;
-    Storage.update<WeightInfo>("weight", index, { weight, date });
+    Storage.updateArray<WeightInfo>("weight", index, { weight, date });
   }
 
 	function remove(event: any) {
     const index = event.target.dataset.index;
-    Storage.remove("weight", index);
-    weightList = [...Storage.get<WeightInfo>("weight")];
+    Storage.removeFromArray("weight", index);
+    weightList = [...Storage.getArray<WeightInfo>("weight")];
   }
 </script>
 

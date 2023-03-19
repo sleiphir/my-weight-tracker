@@ -3,13 +3,16 @@
 	import { onMount } from 'svelte';
 	import { Chart } from 'chart.js/auto';
 	import moment from 'moment';
+  import defaultSettings from '../../settings';
 	import type { ChartConfiguration } from 'chart.js';
 	import type WeightInfo from '../../types/WeightInfo';
 	import type CaloriesInfo from '../../types/CaloriesInfo';
+	import type Settings from '../../types/Settings';
 
 	let chart: any;
-	const weightList = Storage.get<WeightInfo>('weight');
-	const caloriesList = Storage.get<CaloriesInfo>('calories');
+  const settings = Storage.get<Settings>("settings") ?? defaultSettings;
+	const weightList = Storage.getArray<WeightInfo>('weight');
+	const caloriesList = Storage.getArray<CaloriesInfo>('calories');
   const dailyWeight = weightList.map(data => { return { weight: data.weight, date: moment(data.date).format('YYYY/MM/DD') } });
   const dailyCalories = caloriesList.map(data => { return { calories: data.calories, date: moment(data.date).format('YYYY/MM/DD') } });
   const dates = Array.from(new Set(dailyWeight.map(e => e.date).concat(dailyCalories.map(e => e.date)).sort()));
@@ -25,7 +28,6 @@
       weightChartArray.push(dailyWeight[weightIndex].weight);
       weightIndex++;
     }
-    console.log(dailyCalories[caloriesIndex].date, dates[i])
     if (caloriesIndex >= dailyCalories.length || dailyCalories[caloriesIndex].date != dates[i]) {
       caloriesChartArray.push(null);
     } else {
@@ -63,14 +65,14 @@
 		options: {
       scales: {
 				weight: {
-          min: 60,
-          max: 100,
+          min: settings.chart.min_weight,
+          max: settings.chart.max_weight,
           type: 'linear',
           position: 'left'
         },
         calories: {
-          beginAtZero: true,
-          max: 5000,
+          min: settings.chart.min_calories,
+          max: settings.chart.max_calories,
           type: 'linear',
           position: 'right'
         }

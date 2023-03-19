@@ -4,12 +4,12 @@
 
   export let onSave: (weight: number) => void;
 
-  const data = Storage.get<WeightInfo>("weight");
+  const data = Storage.getArray<WeightInfo>("weight");
   let weight: number = data[data.length - 1]?.weight ?? null;
 
   function save() {
     const date = new Date();
-    Storage.push<WeightInfo>("weight", { weight, date })
+    Storage.pushToArray<WeightInfo>("weight", { weight, date })
     onSave(weight);
   }
 </script>

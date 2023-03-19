@@ -4,12 +4,12 @@
 
   export let onSave: (calories: number) => void;
 
-  const data = Storage.get<CaloriesInfo>("calories");
+  const data = Storage.getArray<CaloriesInfo>("calories");
   let calories: number = data[data.length - 1]?.calories ?? null;
 
   function save() {
     const date = new Date();
-    Storage.push<CaloriesInfo>("calories", { calories, date })
+    Storage.pushToArray<CaloriesInfo>("calories", { calories, date })
     onSave(calories);
   }
 </script>
