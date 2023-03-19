@@ -5,7 +5,7 @@
   export let onSave: (weight: number) => void;
 
   const data = Storage.get<WeightInfo>("weight");
-  let weight: number = data[data.length - 1].weight ?? null;
+  let weight: number = data[data.length - 1]?.weight ?? null;
 
   function save() {
     const date = new Date();

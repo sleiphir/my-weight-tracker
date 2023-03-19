@@ -5,7 +5,7 @@
   export let onSave: (calories: number) => void;
 
   const data = Storage.get<CaloriesInfo>("calories");
-  let calories: number = data[data.length - 1].calories ?? null;
+  let calories: number = data[data.length - 1]?.calories ?? null;
 
   function save() {
     const date = new Date();
