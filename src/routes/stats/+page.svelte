@@ -9,12 +9,14 @@
 	import type CaloriesInfo from '../../types/CaloriesInfo';
 	import type Settings from '../../types/Settings';
 
-	let chart: any;
+	let chart: HTMLCanvasElement;
   const settings = Storage.get<Settings>("settings") ?? defaultSettings;
 	const weightList = Storage.getArray<WeightInfo>('weight');
 	const caloriesList = Storage.getArray<CaloriesInfo>('calories');
   const dailyWeight = weightList.map(data => { return { weight: data.weight, date: moment(data.date).format('YYYY/MM/DD') } });
   const dailyCalories = caloriesList.map(data => { return { calories: data.calories, date: moment(data.date).format('YYYY/MM/DD') } });
+	const averageCalories = dailyCalories.reduce((acc, val) => acc += val.calories, 0) / dailyCalories.length;
+	const weightDiff = dailyWeight[dailyWeight.length - 1].weight - dailyWeight[0].weight;
   const dates = Array.from(new Set(dailyWeight.map(e => e.date).concat(dailyCalories.map(e => e.date)).sort()));
   const weightChartArray = [];
   const caloriesChartArray = [];
@@ -44,6 +46,7 @@
 				data: weightChartArray,
 				backgroundColor: ['#7000e1'],
         borderColor: ['#7000e1'],
+				spanGaps: true,
         tension: 0.4,
         yAxisID: 'weight',
 			},
@@ -99,8 +102,25 @@
 	};
 	onMount(() => {
 		const ctx = chart.getContext('2d');
+		if (!ctx) {
+			throw new Error("Could not get context from chart object");
+		}
 		new Chart(ctx, config);
 	});
 </script>
 
-<canvas bind:this={chart} width={400} height={400} />
+<div class="flex flex-col w-[calc(100vh-5rem)] justify-center items-center">
+	<table class="border-separate border-spacing-x-2 text-zinc-300">
+		<tbody>
+			<tr>
+				<td class="text-right">calories / day</td>
+				<td class="font-bold">{Math.round(averageCalories)} Kcal</td>
+			</tr>
+			<tr>
+				<td class="text-right">Weight evolution</td>
+				<td class="font-bold">{weightDiff.toFixed(2)} Kg</td>
+			</tr>
+		</tbody>
+	</table>
+	<canvas bind:this={chart} width={400} height={400} />
+</div>

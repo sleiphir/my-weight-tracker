@@ -5,16 +5,33 @@
 
 	$: caloriesList = Storage.getArray<CaloriesInfo>("calories");
   
-	function save(event: any) {
-    const calories = event.target.value as number;
-    const index = event.target.dataset.index as number;
-    const date  = event.target.dataset.datetime as Date;
-    Storage.updateArray<CaloriesInfo>("calories", index, { calories, date });
+	function save(event: Event) {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
+
+    const { value } = event.target;
+    const { index, datetime } = event.target.dataset;
+
+    if (!index || !datetime) {
+      return;
+    }
+
+    Storage.updateArray<CaloriesInfo>("calories", parseInt(index), { calories: parseInt(value), date: new Date(datetime) });
   }
 
-	function remove(event: any) {
-    const index = event.target.dataset.index;
-    Storage.removeFromArray("calories", index);
+	function remove(event: Event) {
+    if (!(event.currentTarget instanceof HTMLElement)) {
+      return;
+    }
+
+    const index = event.currentTarget.dataset.index;
+
+    if (!index) {
+      return;
+    }
+
+    Storage.removeFromArray("calories", parseInt(index));
     caloriesList = [...Storage.getArray<CaloriesInfo>("calories")];
   }
 </script>

@@ -5,16 +5,33 @@
 
 	$: weightList = Storage.getArray<WeightInfo>("weight");
   
-	function save(event: any) {
-    const weight = event.target.value as number;
-    const index = event.target.dataset.index as number;
-    const date  = event.target.dataset.datetime as Date;
-    Storage.updateArray<WeightInfo>("weight", index, { weight, date });
+	function save(event: Event) {
+    if (!(event.target instanceof HTMLInputElement)) {
+      return;
+    }
+
+    const { value } = event.target;
+    const { index, datetime } = event.target.dataset;
+
+    if (!index || !datetime) {
+      return;
+    }
+
+    Storage.updateArray<WeightInfo>("weight", parseInt(index), { weight: parseInt(value), date: new Date(datetime) });
   }
 
-	function remove(event: any) {
-    const index = event.target.dataset.index;
-    Storage.removeFromArray("weight", index);
+	function remove(event: Event) {
+    if (!(event.currentTarget instanceof HTMLElement)) {
+      return;
+    }
+
+    const index = event.currentTarget.dataset.index;
+
+    if (!index) {
+      return;
+    }
+
+    Storage.removeFromArray("weight", parseInt(index));
     weightList = [...Storage.getArray<WeightInfo>("weight")];
   }
 </script>
