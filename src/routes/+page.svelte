@@ -1,4 +1,9 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import type CaloriesInfo from '../types/CaloriesInfo';
+	import type WeightInfo from '../types/WeightInfo';
+	import * as Storage from '../utils/localStorage';
+
 	const functions: { name: string; link: string }[] = [
 		{ name: 'Weight Tracking', link: '/weight' },
 		{ name: 'Calories Tracking', link: '/calories' },
@@ -6,6 +11,15 @@
 		{ name: 'Statistics', link: '/stats' },
 		{ name: 'Settings', link: '/settings' }
 	];
+
+	// Transform strings in local storage to numbers
+	if (browser) {
+		let weightList = Storage.getArray<WeightInfo>('weight').map(elem => { return { weight: parseFloat(elem.weight.toString()), date: elem.date }});
+		let caloriesList = Storage.getArray<CaloriesInfo>('calories').map(elem => { return { calories: parseInt(elem.calories.toString()), date: elem.date }});
+		Storage.set<WeightInfo[]>("weight", weightList);
+		Storage.set<CaloriesInfo[]>("calories", caloriesList);
+	}
+	
 </script>
 
 <ul>
