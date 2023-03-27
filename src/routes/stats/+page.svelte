@@ -80,7 +80,6 @@
           position: 'right'
         }
 			},
-			responsive: true,
 			plugins: {
 				legend: {
 					position: 'bottom',
@@ -109,18 +108,18 @@
 	});
 </script>
 
-<div class="flex flex-col w-[calc(100vh-5rem)] justify-center items-center">
-	<table class="border-separate border-spacing-x-2 text-zinc-300">
-		<tbody>
-			<tr>
-				<td class="text-right">calories / day</td>
-				<td class="font-bold">{Math.round(averageCalories)} Kcal</td>
-			</tr>
-			<tr>
-				<td class="text-right">Weight evolution</td>
-				<td class="font-bold">{weightDiff.toFixed(2)} Kg</td>
-			</tr>
-		</tbody>
-	</table>
-	<canvas bind:this={chart} width={400} height={400} />
+<table class="border-separate border-spacing-x-2 text-zinc-300">
+	<tbody>
+		<tr>
+			<td class="text-right">calories / day</td>
+			<td class="font-bold">{Math.round(averageCalories)} Kcal</td>
+		</tr>
+		<tr>
+			<td class="text-right">Weight evolution</td>
+			<td class="font-bold">{weightDiff.toFixed(2)} Kg</td>
+		</tr>
+	</tbody>
+</table>
+<div class="flex align-center justify-center w-full h-[calc(100vh-3.25rem)]">
+	<canvas bind:this={chart} height='100%' width='100%' />
 </div>
