@@ -13,8 +13,8 @@
   const settings = Storage.get<Settings>("settings") ?? defaultSettings;
 	const weightList = Storage.getArray<WeightInfo>('weight');
 	const caloriesList = Storage.getArray<CaloriesInfo>('calories');
-  const dailyWeight = weightList.map(data => { return { weight: data.weight, date: moment(data.date).format('YYYY/MM/DD') } });
-  const dailyCalories = caloriesList.map(data => { return { calories: data.calories, date: moment(data.date).format('YYYY/MM/DD') } });
+  const dailyWeight = weightList.map(data => { return { weight: data.weight, date: moment(data.date).format('YYYY/MM/DD HH:mm') } });
+  const dailyCalories = caloriesList.map(data => { return { calories: data.calories, date: moment(data.date).format('YYYY/MM/DD HH:mm') } });
 	const averageCalories = dailyCalories.reduce((acc, val) => acc += val.calories, 0) / dailyCalories.length;
 	const weightDiff = dailyWeight[dailyWeight.length - 1].weight - dailyWeight[0].weight;
   const dates = Array.from(new Set(dailyWeight.map(e => e.date).concat(dailyCalories.map(e => e.date)).sort()));
